@@ -10,13 +10,12 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: ${POSTGRES_DB:-dograh}
     volumes:
-      # تغییر مهم ۱: اسم والیوم را عوض کردیم تا دیتابیس نو شود
       - dograh_postgres_data_new:/var/lib/postgresql/data
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 10s
       timeout: 5s
-      retries: 20 # تغییر مهم ۲: زمان را خیلی زیاد کردیم
+      retries: 20
 
   redis:
     image: redis:7-alpine
@@ -88,7 +87,6 @@ services:
       - "3010:3010"
 
 volumes:
-  # تغییر مهم ۳: اینجا هم باید اسم جدید را تعریف کنیم
   dograh_postgres_data_new:
   dograh_redis_data:
   dograh_minio_data:
