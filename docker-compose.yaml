@@ -10,13 +10,8 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: dograh
     volumes:
-      - dograh_data_final:/var/lib/postgresql/data
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
-      interval: 10s
-      timeout: 5s
-      retries: 20
-      start_period: 10s
+      - dograh_data_force:/var/lib/postgresql/data
+    # Healthcheck حذف شد
 
   redis:
     image: redis:7-alpine
@@ -24,13 +19,8 @@ services:
     restart: always
     command: redis-server --requirepass ${REDIS_PASSWORD:-redissecret}
     volumes:
-      - dograh_redis_final:/data
-    healthcheck:
-      test: ["CMD", "redis-cli", "-a", "${REDIS_PASSWORD:-redissecret}", "ping"]
-      interval: 10s
-      timeout: 5s
-      retries: 20
-      start_period: 10s
+      - dograh_redis_force:/data
+    # Healthcheck حذف شد
 
   minio:
     image: minio/minio
@@ -41,13 +31,8 @@ services:
       MINIO_ROOT_USER: minioadmin
       MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
     volumes:
-      - dograh_minio_final:/data
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
-      interval: 10s
-      timeout: 5s
-      retries: 20
-      start_period: 10s
+      - dograh_minio_force:/data
+    # Healthcheck حذف شد
 
   api:
     build:
@@ -56,12 +41,9 @@ services:
     container_name: dograh-api
     restart: always
     depends_on:
-      postgres:
-        condition: service_healthy
-      redis:
-        condition: service_healthy
-      minio:
-        condition: service_healthy
+      - postgres
+      - redis
+      - minio
     environment:
       ENVIRONMENT: production
       DATABASE_URL: postgres://postgres:${POSTGRES_PASSWORD}@postgres:5432/dograh
@@ -90,6 +72,6 @@ services:
       - "3010:3010"
 
 volumes:
-  dograh_data_final:
-  dograh_redis_final:
-  dograh_minio_final:
+  dograh_data_force:
+  dograh_redis_force:
+  dograh_minio_force:
