@@ -11,7 +11,7 @@ services:
       POSTGRES_DB: dograh
     volumes:
       - dograh_data_nuclear:/var/lib/postgresql/data
-    # Healthcheck حذف شد - دیگر بهانه نمی‌گیرد
+    # No healthcheck to prevent restart loops
 
   redis:
     image: redis:7-alpine
@@ -20,7 +20,7 @@ services:
     command: redis-server --requirepass ${REDIS_PASSWORD:-redissecret}
     volumes:
       - dograh_redis_nuclear:/data
-    # Healthcheck حذف شد
+    # No healthcheck
 
   minio:
     image: minio/minio
@@ -32,7 +32,7 @@ services:
       MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
     volumes:
       - dograh_minio_nuclear:/data
-    # Healthcheck حذف شد
+    # No healthcheck
 
   api:
     image: ghcr.io/dograh-hq/dograh-api:latest
