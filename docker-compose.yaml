@@ -30,7 +30,7 @@ services:
   api:
     build:
       context: .
-      dockerfile: ./apps/api/Dockerfile
+      dockerfile: ./api/Dockerfile
     restart: always
     depends_on:
       - postgres
@@ -53,7 +53,7 @@ services:
   ui:
     build:
       context: .
-      dockerfile: ./apps/ui/Dockerfile
+      dockerfile: ./ui/Dockerfile
     restart: always
     depends_on:
       - api
