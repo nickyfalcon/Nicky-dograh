@@ -11,7 +11,7 @@ services:
       POSTGRES_DB: dograh
     volumes:
       - dograh_data_nuclear:/var/lib/postgresql/data
-    # Healthcheck حذف شد - به هیچ وجه ریستارت نمی‌کند
+    # Healthcheck حذف شد - دیگر بهانه نمی‌گیرد
 
   redis:
     image: redis:7-alpine
